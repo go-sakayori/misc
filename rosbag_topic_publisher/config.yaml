@@ -1,0 +1,30 @@
+# Configuration for multi-topic publisher
+# This file specifies which topics to extract and publish from rosbags
+
+# Topics to publish
+# Each topic can have:
+#   - source_topic: Topic name in the rosbag to extract from
+#   - publish_topic: (optional) Topic name to publish to (defaults to source_topic)
+topics:
+  - source_topic: /planning/generator/diffusion_planner/candidate_trajectories
+    publish_topic: /planning/diffusion_planner/candidate_trajectories
+
+  - source_topic: /localization/acceleration
+    publish_topic: /localization/acceleration
+
+  - source_topic: /localization/kinematic_state
+    publish_topic: /localization/kinematic_state
+
+  - source_topic: /tf
+    publish_topic: /tf
+
+# Publishing options
+publish_options:
+  # Number of times to publish each message (for reliability)
+  num_publishes: 1
+
+  # Interval between publishes (seconds)
+  publish_interval: 0.1
+
+  # Wait time for subscribers to connect (seconds)
+  connection_wait_time: 1.0

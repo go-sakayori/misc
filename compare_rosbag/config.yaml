@@ -1,0 +1,62 @@
+# Configuration file for rosbag comparison
+
+# Topics to compare between two rosbags
+# Example:
+# topics:
+#   - /camera/image_raw
+#   - /imu/data
+#   - /lidar/points
+#   - /vehicle/status
+topics:
+  - /localization/acceleration
+  - /localization/kinematic_state
+  - /localization/pose_estimator/pose_with_covariance
+  - /pacmod/from_can_bus
+  - /sensing/camera/camera0/camera_info
+  - /sensing/camera/camera0/image_raw/compressed
+  - /sensing/camera/camera1/camera_info
+  - /sensing/camera/camera1/image_raw/compressed
+  - /sensing/camera/camera2/camera_info
+  - /sensing/camera/camera2/image_raw/compressed
+  - /sensing/camera/camera3/camera_info
+  - /sensing/camera/camera3/image_raw/compressed
+  - /sensing/camera/camera4/camera_info
+  - /sensing/camera/camera4/image_raw/compressed
+  - /sensing/camera/camera5/camera_info
+  - /sensing/camera/camera5/image_raw/compressed
+  - /sensing/camera/camera6/camera_info
+  - /sensing/camera/camera6/image_raw/compressed
+  - /sensing/camera/camera7/camera_info
+  - /sensing/camera/camera7/image_raw/compressed
+  - /sensing/camera/camera8/camera_info
+  - /sensing/camera/camera8/image_raw/compressed
+  - /sensing/camera/camera9/camera_info
+  - /sensing/camera/camera9/image_raw/compressed
+  - /sensing/camera/camera10/camera_info
+  - /sensing/camera/camera10/image_raw/compressed
+  - /sensing/imu/imu_data
+  - /sensing/imu/tamagawa/imu_raw
+  - /sensing/lidar/front_left/pandar_packets
+  - /sensing/lidar/front_right/pandar_packets
+  - /sensing/lidar/side_left/pandar_packets
+  - /sensing/lidar/side_right/pandar_packets
+  - /sensing/lidar/top/pandar_packets
+  - /sensing/radar/front_center/nebula_packets
+  - /sensing/radar/front_left/nebula_packets
+  - /sensing/radar/front_right/nebula_packets
+  - /sensing/radar/rear_left/nebula_packets
+  - /sensing/radar/rear_right/nebula_packets
+  - /sensing/radar/rear_center/nebula_packets
+  - /tf
+  - /vehicle/status/control_mode
+  - /vehicle/status/steering_status
+  - /vehicle/status/turn_indicators_status
+  - /vehicle/status/velocity_status
+
+# Comparison options
+comparison:
+  # Show detailed differences when messages are missing
+  show_differences: true
+
+  # Maximum number of differences to display per topic
+  max_differences_to_show: 10

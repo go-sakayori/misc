@@ -82,7 +82,7 @@ class RosbagReader:
         """
         Read all messages from specified topics and compute their hashes in a single pass.
         This is memory efficient for large messages (e.g., images, point clouds).
-        Uses SHA-256 hash of binary data for comparison.
+        Uses SHA-256 hash of binary data and timestamp for comparison.
 
         Args:
             topics: List of topic names to read
@@ -98,13 +98,16 @@ class RosbagReader:
 
         # Read all messages in a single pass and compute hashes
         while self.reader.has_next():
-            topic_name, data, _ = self.reader.read_next()
+            topic_name, data, timestamp = self.reader.read_next()
 
             # Only process topics we're interested in
             if topic_name in topic_set:
-                # Hash the binary data (CDR serialized)
+                # Hash the binary data with timestamp
                 # This is memory efficient for large messages
-                msg_hash = hashlib.sha256(bytes(data)).hexdigest()
+                hasher = hashlib.sha256()
+                hasher.update(bytes(data))
+                hasher.update(str(timestamp).encode())
+                msg_hash = hasher.hexdigest()
                 hashes_by_topic[topic_name].add(msg_hash)
 
         return hashes_by_topic
@@ -131,12 +134,15 @@ class RosbagReader:
 
         # Read all messages in a single pass
         while self.reader.has_next():
-            topic_name, data, _ = self.reader.read_next()
+            topic_name, data, timestamp = self.reader.read_next()
 
             # Only process topics we're interested in
             if topic_name in topic_set:
-                # Hash the binary data with index
-                msg_hash = hashlib.sha256(bytes(data)).hexdigest()
+                # Hash the binary data with timestamp
+                hasher = hashlib.sha256()
+                hasher.update(bytes(data))
+                hasher.update(str(timestamp).encode())
+                msg_hash = hasher.hexdigest()
                 messages_by_topic[topic_name].append((topic_counters[topic_name], msg_hash))
                 topic_counters[topic_name] += 1
 
@@ -221,7 +227,7 @@ class BagComparator:
         """
         Compare a single topic between two bags using hash-based comparison.
         Checks if all messages from bag1 are contained in bag2.
-        Uses SHA-256 hash of binary data for memory-efficient comparison.
+        Uses SHA-256 hash of binary data and timestamp for memory-efficient comparison.
 
         Args:
             _topic: Topic name (unused, for clarity)

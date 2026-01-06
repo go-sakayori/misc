@@ -1,0 +1,11 @@
+frame_id: map
+sleep_sec: 1
+use_sim_time: false
+
+initialpose:
+  position: {x: 89424.390625, y: 43241.9296875, z: 0.0}
+  orientation: {x: 0.0, y: 0.0, z: -0.46821038430768985, w: 0.8836110324349404}
+
+goal:
+  position: {x: 89153.3828125, y: 42417.453125, z: 0.0}
+  orientation: {x: 0.0, y: 0.0, z: -0.9590934049776575, w: 0.28308981000446315}

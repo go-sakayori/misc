@@ -1,0 +1,56 @@
+{
+  "categories": [
+    "cs.RO",
+    "cs.CV",
+    "cs.LG",
+    "cs.AI",
+    "eess.SY"
+  ],
+  "core_terms": [
+    "autonomous driving",
+    "self-driving",
+    "autonomous vehicle",
+    "end-to-end driving",
+    "automated driving"
+  ],
+  "related_topics": [
+    "learning-based planner",
+    "diffusion planner",
+    "imitation learning planning",
+    "closed-loop planning",
+    "nuPlan",
+    "reinforcement learning planning",
+    "end-to-end autonomous driving",
+    "vision language action",
+    "world model",
+    "closed-loop evaluation",
+    "data curation",
+    "data engine",
+    "auto-labeling",
+    "scenario mining",
+    "long-tail scenarios",
+    "synthetic data generation"
+  ],
+  "total": 20,
+  "new_candidates": 28,
+  "related_candidates": 8,
+  "abstract_chars": 600,
+  "output_dir": "~/arxiv-daily",
+  "drive_folder_id": "19f0j3R21u5SflDonSWcYh56nTAVNc5pf",
+  "rclone_remote": "gdrive",
+  "focus_terms": [
+    "planning",
+    "planner",
+    "end-to-end",
+    "trajectory",
+    "imitation learning",
+    "world model",
+    "dataset",
+    "data curation",
+    "data engine",
+    "auto-labeling",
+    "long-tail",
+    "scenario mining",
+    "synthetic data"
+  ]
+}

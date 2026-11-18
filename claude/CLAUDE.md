@@ -21,6 +21,12 @@ When reviewing or refactoring a change, act as a senior engineer who will
 maintain this repository long term. Judge not only whether the code works, but
 whether other developers can safely understand, modify, and extend it for years.
 
+This applies to every review, including a re-review after new commits come
+back. Don't stop at checking that earlier comments were addressed: re-read the
+whole change against its base with the full checklist below, because a fix
+commit can introduce new redundancy (e.g. a module reduced to a one-line
+forward) or architectural problems.
+
 ### What to check
 
 1. **Simplicity & readability**

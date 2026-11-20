@@ -10,6 +10,11 @@
   - replies on review threads, and PR issue comments
 - Replies to the user in the conversation stay in the user's language; only the
   text posted to GitHub is English.
+- Never post to a PR without the user's explicit approval for that post. This
+  covers reviews, inline comments, thread replies and issue comments. After a
+  review, present the findings first (in any language, e.g. the English draft
+  itself), and post only after the user approves. Approval of one post doesn't
+  carry over to the next review.
 - Always self-review the diff before creating a PR. Read the full diff against
   the base branch, check for unintended changes (unrelated files, lock churn,
   debug leftovers), confirm that docs/comments that reference the changed
@@ -68,6 +73,35 @@ forward) or architectural problems.
 
 First summarize the review findings and the improvement plan, then make the necessary fixes.
 If an unclear point matters for a decision, ask instead of changing the spec on a guess.
+
+### Verifying review findings
+
+Past mistakes came from stating unverified inferences as facts: a premise about
+how code behaves that was never checked, an impact estimated without measuring
+it, and a suggested fix whose side effects were never considered. Before
+presenting findings:
+
+1. **Back every finding with evidence**: a measured value, a command that
+   reproduces it, or the exact code lines it rests on. If you cannot verify a
+   claim, phrase it as a question, not as a defect. Don't state its severity
+   either.
+2. **Check what a suggested fix breaks.** Before proposing a fix, trace at least
+   its main side effect, e.g. which data or callers the new behavior affects.
+3. **Use a subagent as a falsifier, not as a second reviewer.** For non-trivial
+   reviews, give a subagent each finding (claim plus evidence) and ask it to
+   find reasons the claim does not hold. Resolve any disagreement by checking
+   the code or running it yourself, not by letting the agents debate.
+4. **State the scope in every review report**: how many of the PR's changed
+   files you read in full (e.g. "19/19"), which tests ran and which were
+   skipped, and what you could not verify. A "no findings" conclusion counts as
+   a claim too. It requires the whole-diff read like any other.
+5. **On a re-review, start from the base, not from your previous review.** Get
+   the file list from `git diff --stat $(git merge-base origin/<base> <head>) <head>`
+   (or the PR's file list), read every listed file in full, and write the scope
+   line from that list, naming the range (e.g. "main...19fbb3d, 25/25 files").
+   Never reuse an earlier round's scope line. Reading only the commits since the
+   last review and reporting it as a whole-PR read once led to an approval based
+   on a false scope.
 
 ### Principles
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Link this repository's Claude Code config into ~/.claude and install the
+# Link this repository's Claude Code config (CLAUDE.md, skills, hooks) into
+# ~/.claude, register the hooks in settings.json, and install the
 # dependencies of the skills. Safe to run again: existing links are left as is,
 # and existing files are moved to <name>.bak.<timestamp> before being replaced.
 #
@@ -42,6 +43,31 @@ for skill in "$REPO_DIR"/skills/*/; do
   skill="${skill%/}"
   link "$skill" "$CLAUDE_DIR/skills/$(basename "$skill")"
 done
+mkdir -p "$CLAUDE_DIR/hooks"
+for hook in "$REPO_DIR"/hooks/*.sh; do
+  link "$hook" "$CLAUDE_DIR/hooks/$(basename "$hook")"
+done
+
+# settings.json also holds machine-local settings (model, theme), so it is not
+# linked: the review-scope hook is added to it once, keeping everything else.
+echo "== Hooks in settings.json"
+SETTINGS="$CLAUDE_DIR/settings.json"
+HOOK_COMMAND="~/.claude/hooks/pr-review-scope-check.sh"
+if ! command -v jq >/dev/null; then
+  echo "skipped  jq is not installed; install jq and run this script again (the hook needs jq and gh too)"
+elif [ -f "$SETTINGS" ] && jq -e --arg c "$HOOK_COMMAND" \
+    'any(.hooks.PreToolUse[]?.hooks[]?; .command == $c)' "$SETTINGS" >/dev/null; then
+  echo "ok       PreToolUse(Bash) $HOOK_COMMAND"
+else
+  [ -f "$SETTINGS" ] && cp "$SETTINGS" "$SETTINGS.bak.$STAMP" && echo "backup   $SETTINGS -> $SETTINGS.bak.$STAMP"
+  { [ -f "$SETTINGS" ] && cat "$SETTINGS" || echo '{}'; } \
+    | jq --arg c "$HOOK_COMMAND" '.hooks.PreToolUse = ((.hooks.PreToolUse // []) + [{
+        matcher: "Bash",
+        hooks: [{type: "command", command: $c, timeout: 30, statusMessage: "Checking PR review scope..."}]
+      }])' > "$SETTINGS.tmp.$STAMP"
+  mv "$SETTINGS.tmp.$STAMP" "$SETTINGS"
+  echo "added    PreToolUse(Bash) $HOOK_COMMAND"
+fi
 
 if [ "$INSTALL_DEPS" -eq 0 ]; then
   echo "== Dependencies skipped (--no-deps)"
@@ -76,4 +102,4 @@ EOF
 fi
 
 echo
-echo "Done. Restart Claude Code to load the new CLAUDE.md and skills."
+echo "Done. Restart Claude Code to load the new CLAUDE.md, skills and hooks."
